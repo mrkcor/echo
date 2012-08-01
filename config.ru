@@ -1,0 +1,3 @@
+require "./echo"
+
+run Echo

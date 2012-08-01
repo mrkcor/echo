@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <title>Echo</title>
+  </head>
+  <body>
+    <% unless message.nil? %>
+      Echo: <%= CGI.escape_html(message) %>
+    <% end %>
+    <form method="post" action="/">
+      <label for="message">Message</label>
+      <input type="text" name="message" id="message" />
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>
