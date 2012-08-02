@@ -74,7 +74,7 @@ class CapybaraTestCase < MiniTest::Unit::TestCase
     save_screenshot(__name__) unless passed?
     Capybara.reset_sessions!
     Capybara.use_default_driver
-    Capybara.app_host = Capybara.default_host
+    Capybara.app_host = nil
   end
 
   # Determines if a selenium_remote_* driver is being used
