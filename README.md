@@ -1,4 +1,4 @@
-Echo [![Build Status](https://secure.travis-ci.org/mkremer/echo.png)](http://travis-ci.org/mkremer/echo)
+Echo
 ==============
 Example of a basic Sinatra application tested with Capybara and Selenium using various options.
 
