@@ -11,7 +11,7 @@ GEM
       xpath (~> 0.1.4)
     childprocess (0.3.4)
       ffi (~> 1.0, >= 1.0.6)
-    ffi (1.1.1)
+    ffi (1.11.1)
     headless (0.3.1)
     libwebsocket (0.1.5)
       addressable
