@@ -2,7 +2,7 @@ Echo
 ==============
 Example of a basic Sinatra application tested with Capybara and Selenium using various options.
 
-Echo has been tested with Ruby 1.9.3
+Echo has been tested with Ruby 2.7.2
 
 If you have any issues, suggestions, improvements, etc. then please log them using GitHub issues.
 
@@ -16,6 +16,4 @@ Echo is released under the MIT license.
 
 Author
 ------
-[Mark Kremer](https://github.com/mkremer)
-
-
+[Mark Cornelissen](https://github.com/mrkcor)
