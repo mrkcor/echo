@@ -1,7 +1,5 @@
-# A sample Gemfile
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem "sinatra", require: false
-gem "rake"
-gem "capybara"
-gem "headless"
+gem 'sinatra', require: false
+gem 'rake'
+gem 'capybara'
