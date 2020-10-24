@@ -2,12 +2,14 @@ Echo
 ==============
 This is an example project to demonstrate testing a Rack application (in this case using Sinatra) using Capybara and Selenium with various options. A blog post that uses this project is being written... :)
 
-This project runs on 2.7.2 (but will likely function with 2.6.x too).
+This project runs on ruby 2.7.x (but will likely function with 2.6.x too).
 
 If you have any issues, suggestions, improvements, etc. then please log them using GitHub issues.
 
 Usage
 -----
+This project comes with a very basic Vagrant box.
+
 To run the Rack application run "bundle exec rackup", if you then visit the root you will see a webpage with a text input and button. Entering a text and clicking the button will refresh the page echoing back the message that you entered.
 
 To run the tests run "bundle exec rake test", by default this will run against a headless Firefox (this will require you to have the geckodriver installed).
