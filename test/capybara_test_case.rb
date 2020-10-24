@@ -3,7 +3,7 @@ require 'capybara/minitest'
 # Tell Capybara which Rack app to test
 Capybara.app = Echo
 
-# Register selenium_remote driver, settings are determined by environemnt variables:
+# Register selenium_remote driver, settings are determined by environment variables:
 # * SELENIUM_REMOTE_BROWER sets the browser to use, defaults to firefox
 # * SELENIUM_REMOTE_HOST sets the hostname to use, defaults to localhost
 # * SELENIUM_REMOTE_PORT sets the port to use, defaults to 4444 (this matches the geckodriver's default for firefox)
