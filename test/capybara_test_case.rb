@@ -18,8 +18,9 @@ end
 Capybara.default_driver = ENV.fetch('CAPYBARA_DRIVER', 'selenium_headless').to_sym
 # Change the server to webrick since this project is not using puma
 Capybara.server = :webrick
-# Change where Capybara saves output
-Capybara.save_path = File.realpath('../tmp', File.dirname(__FILE__))
+# Change where Capybara saves output, the default is tmp in the project root, override with ENV variable
+# CAPYBARA_SAVE_PATH
+Capybara.save_path = ENV.fetch('CAPYBARA_SAVE_PATH', File.realpath('../tmp', File.dirname(__FILE__)))
 # Change the Capybara server host and port based on ENV variables
 # These ENV variables are relevant when working with selenium on another machine
 Capybara.server_host = ENV['CAPYBARA_SERVER_HOST'] if ENV.include?('CAPYBARA_SERVER_HOST')
@@ -49,22 +50,19 @@ class CapybaraTestCase < MiniTest::Test
   end
 
   # Set the selenium screen size based on two environment variables:
-  # * SELENIUM_SCREEN_SIZE containing dimensions in the format WIDTHxHEIGHT (for example 800x600)
-  #   or a named label (iphone_6, desktop, etc.), defaults to desktop (1400x1400)
-  # * SELENIUM_SCREEN_TURNED will reverse the values for WIDTH and HEIGHT, this is useful when
-  #   using a shortcut like iphone_x and emulate a turned screen
+  # * SELENIUM_SCREEN_SIZE containing dimensions in the format WIDTHxHEIGHT (for example 800x600) or a named
+  #   label (iphone_6, desktop, etc.), defaults to desktop (1400x1400)
+  # * SELENIUM_SCREEN_TURNED will reverse the values for WIDTH and HEIGHT, this is useful when using a shortcut
+  #   like iphone_x and emulate a turned screen
   def set_screen_size
     screen_sizes = {
-      'galaxy_s9'     => '360x740',
-      'iphone_6'      => '375x667',
-      'iphone_6_plus' => '414x736',
-      'iphone_7'      => '375x667',
-      'iphone_7_plus' => '414x736',
-      'iphone_8'      => '375x667',
-      'iphone_8_plus' => '414x736',
-      'iphone_x'      => '375x812',
-      'ipad'          => '768x1024',
-      'desktop'       => '1400x1400'
+      'galaxy_s9' => '360x740',
+      'iphone_6' => '375x667', 'iphone_6_plus' => '414x736',
+      'iphone_7' => '375x667', 'iphone_7_plus' => '414x736',
+      'iphone_8' => '375x667', 'iphone_8_plus' => '414x736',
+      'iphone_x' => '375x812',
+      'ipad' => '768x1024',
+      'desktop' => '1400x1400'
     }
 
     screen_size = ENV.fetch('SELENIUM_SCREEN_SIZE', 'desktop')
