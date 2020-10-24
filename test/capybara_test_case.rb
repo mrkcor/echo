@@ -2,22 +2,38 @@ require 'capybara/minitest'
 
 # Tell Capybara which Rack app to test
 Capybara.app = Echo
-# Set the default driver to selenium to allow tests with JavaScript
-Capybara.default_driver = :selenium_headless
+
+# Register selenium_remote driver, settings are determined by environemnt variables
+# SELENIUM_REMOTE_BROWER sets the browser to use, defaults to firefox
+# SELENIUM_REMOTE_HOST sets the hostname to use, defaults to localhost
+# SELENIUM_REMOT_PORT sets the port to use, defaults to 4444 (this matches the geckodriver's default for firefox)
+Capybara.register_driver :selenium_remote do |app|
+  Capybara::Selenium::Driver.new(app, browser: ENV.fetch('SELENIUM_REMOTE_BROWSER', 'firefox').to_sym,
+                                      url: "http://#{ENV.fetch('SELENIUM_REMOTE_HOST', '127.0.0.1')}:#{ENV.fetch('SELENIUM_REMOTE_PORT', '4444')}")
+end
+
+# Set the default driver to based on the ENV variable CAPYBARA_DRIVER, if empty
+# this defaults selenium_headless to allow tests with JavaScript.
+Capybara.default_driver = ENV.fetch('CAPYBARA_DRIVER', 'selenium_headless').to_sym
 # Change the server to webrick since this project is not using puma
 Capybara.server = :webrick
 # Change where Capybara saves output
 Capybara.save_path = File.realpath('../tmp', File.dirname(__FILE__))
+# Change the Capybara server host and port based on ENV variables
+# These ENV variables are relevant when working with selenium on another machine
+Capybara.server_host = ENV['CAPYBARA_SERVER_HOST'] if ENV.include?('CAPYBARA_SERVER_HOST')
+Capybara.server_port = ENV['CAPYBARA_SERVER_PORT'].to_i if ENV.include?('CAPYBARA_SERVER_PORT')
 
 # Base test case class to use for tests using Capybara
 class CapybaraTestCase < MiniTest::Test
   include Capybara::DSL
   include Capybara::Minitest::Assertions
 
-  # setup is run before each test and sets up the environment appropriately,
-  # the code should pretty much explain itself
   def setup
-    # do something ?
+    unless page.server.nil?
+      app_port = Capybara.server_port || page.server.port
+      Capybara.app_host = "http://#{Capybara.server_host}:#{app_port}"
+    end
   end
 
   # teardown is run after each test, it saves a screenshot if the last test
@@ -26,5 +42,6 @@ class CapybaraTestCase < MiniTest::Test
     save_screenshot("#{name}.png") unless passed?
     Capybara.reset_sessions!
     Capybara.use_default_driver
+    Capybara.app_host = nil
   end
 end
