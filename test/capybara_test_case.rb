@@ -41,7 +41,7 @@ class CapybaraTestCase < MiniTest::Test
   # teardown is run after each test, it saves a screenshot if the last test
   # failed and resets Capybara for the next test
   def teardown
-    save_screenshot("#{name}.png") unless passed?
+    save_screenshot("#{name}.png") unless page.server.nil? || passed?
     Capybara.reset_sessions!
     Capybara.use_default_driver
     Capybara.app_host = nil
