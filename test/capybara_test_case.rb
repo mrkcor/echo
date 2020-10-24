@@ -48,23 +48,32 @@ class CapybaraTestCase < MiniTest::Test
     Capybara.app_host = nil
   end
 
+  # Set the selenium screen size based on two environment variables:
+  # * SELENIUM_SCREEN_SIZE containing dimensions in the format WIDTHxHEIGHT (for example 800x600)
+  #   or a named label (iphone_6, desktop, etc.), defaults to desktop (1400x1400)
+  # * SELENIUM_SCREEN_TURNED will reverse the values for WIDTH and HEIGHT, this is useful when
+  #   using a shortcut like iphone_x and emulate a turned screen
   def set_screen_size
     screen_sizes = {
-      galaxy_s9: '360x740',
-      iphone_6: '375x667',
-      iphone_6_plus: '414x736',
-      iphone_7: '375x667',
-      iphone_7_plus: '414x736',
-      iphone_8: '375x667',
-      iphone_8_plus: '414x736',
-      iphone_x: '375x812',
-      ipad: '768x1024',
-      desktop: '1400x1400'
+      'galaxy_s9'     => '360x740',
+      'iphone_6'      =>  '375x667',
+      'iphone_6_plus' =>  '414x736',
+      'iphone_7'      =>  '375x667',
+      'iphone_7_plus' =>  '414x736',
+      'iphone_8'      =>  '375x667',
+      'iphone_8_plus' =>  '414x736',
+      'iphone_x'      =>  '375x812',
+      'ipad'          =>  '768x1024',
+      'desktop'       =>  '1400x1400'
     }
-    screen_size = screen_sizes.fetch(ENV.fetch('SELENIUM_SCREEN_SIZE', 'desktop').to_sym)
+
+    screen_size = ENV.fetch('SELENIUM_SCREEN_SIZE', 'desktop')
+    screen_size = screen_sizes.fetch(screen_size) if screen_sizes.include?(screen_size)
     screen_size ||= screen_sizes[:desktop]
+
     screen_size = screen_size.split('x')
     screen_size = screen_size.reverse if ENV.include?('SELENIUM_SCREEN_TURNED')
+
     page.driver.browser.manage.window.size = Selenium::WebDriver::Dimension.new(*screen_size)
   end
 end
