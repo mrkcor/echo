@@ -31,17 +31,18 @@ class CapybaraTestCase < MiniTest::Test
   include Capybara::Minitest::Assertions
 
   def setup
-    unless page.server.nil?
-      app_port          = Capybara.server_port || page.server.port
-      Capybara.app_host = "http://#{Capybara.server_host}:#{app_port}"
-      set_screen_size
-    end
+    return if page.server.nil?
+
+    app_port          = Capybara.server_port || page.server.port
+    Capybara.app_host = "http://#{Capybara.server_host}:#{app_port}"
+    set_screen_size
   end
 
   # teardown is run after each test, it saves a screenshot if the last test
   # failed and resets Capybara for the next test
   def teardown
     save_screenshot("#{name}.png") unless page.server.nil? || passed?
+
     Capybara.reset_sessions!
     Capybara.use_default_driver
     Capybara.app_host = nil
@@ -63,7 +64,7 @@ class CapybaraTestCase < MiniTest::Test
     screen_size = screen_sizes.fetch(ENV.fetch('SELENIUM_SCREEN_SIZE', 'desktop').to_sym)
     screen_size ||= screen_sizes[:desktop]
     screen_size = screen_size.split('x')
-    screen_size = screen_size.reverse if ENV.include?('SELENIUM_TURN_SCREEN')
+    screen_size = screen_size.reverse if ENV.include?('SELENIUM_SCREEN_TURNED')
     page.driver.browser.manage.window.size = Selenium::WebDriver::Dimension.new(*screen_size)
   end
 end
