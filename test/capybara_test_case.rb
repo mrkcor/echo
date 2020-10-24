@@ -3,13 +3,14 @@ require 'capybara/minitest'
 # Tell Capybara which Rack app to test
 Capybara.app = Echo
 
-# Register selenium_remote driver, settings are determined by environemnt variables
-# SELENIUM_REMOTE_BROWER sets the browser to use, defaults to firefox
-# SELENIUM_REMOTE_HOST sets the hostname to use, defaults to localhost
-# SELENIUM_REMOT_PORT sets the port to use, defaults to 4444 (this matches the geckodriver's default for firefox)
+# Register selenium_remote driver, settings are determined by environemnt variables:
+# * SELENIUM_REMOTE_BROWER sets the browser to use, defaults to firefox
+# * SELENIUM_REMOTE_HOST sets the hostname to use, defaults to localhost
+# * SELENIUM_REMOTE_PORT sets the port to use, defaults to 4444 (this matches the geckodriver's default for firefox)
 Capybara.register_driver :selenium_remote do |app|
-  Capybara::Selenium::Driver.new(app, browser: ENV.fetch('SELENIUM_REMOTE_BROWSER', 'firefox').to_sym,
-                                      url: "http://#{ENV.fetch('SELENIUM_REMOTE_HOST', '127.0.0.1')}:#{ENV.fetch('SELENIUM_REMOTE_PORT', '4444')}")
+  browser = ENV.fetch('SELENIUM_REMOTE_BROWSER', 'firefox').to_sym
+  url     = "http://#{ENV.fetch('SELENIUM_REMOTE_HOST', '127.0.0.1')}:#{ENV.fetch('SELENIUM_REMOTE_PORT', '4444')}"
+  Capybara::Selenium::Driver.new(app, browser: browser, url: url)
 end
 
 # Set the default driver to based on the ENV variable CAPYBARA_DRIVER, if empty
@@ -31,8 +32,9 @@ class CapybaraTestCase < MiniTest::Test
 
   def setup
     unless page.server.nil?
-      app_port = Capybara.server_port || page.server.port
+      app_port          = Capybara.server_port || page.server.port
       Capybara.app_host = "http://#{Capybara.server_host}:#{app_port}"
+      set_screen_size
     end
   end
 
@@ -43,5 +45,25 @@ class CapybaraTestCase < MiniTest::Test
     Capybara.reset_sessions!
     Capybara.use_default_driver
     Capybara.app_host = nil
+  end
+
+  def set_screen_size
+    screen_sizes = {
+      galaxy_s9: '360x740',
+      iphone_6: '375x667',
+      iphone_6_plus: '414x736',
+      iphone_7: '375x667',
+      iphone_7_plus: '414x736',
+      iphone_8: '375x667',
+      iphone_8_plus: '414x736',
+      iphone_x: '375x812',
+      ipad: '768x1024',
+      desktop: '1400x1400'
+    }
+    screen_size = screen_sizes.fetch(ENV.fetch('SELENIUM_SCREEN_SIZE', 'desktop').to_sym)
+    screen_size ||= screen_sizes[:desktop]
+    screen_size = screen_size.split('x')
+    screen_size = screen_size.reverse if ENV.include?('SELENIUM_TURN_SCREEN')
+    page.driver.browser.manage.window.size = Selenium::WebDriver::Dimension.new(*screen_size)
   end
 end
