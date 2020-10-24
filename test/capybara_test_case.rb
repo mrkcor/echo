@@ -56,15 +56,15 @@ class CapybaraTestCase < MiniTest::Test
   def set_screen_size
     screen_sizes = {
       'galaxy_s9'     => '360x740',
-      'iphone_6'      =>  '375x667',
-      'iphone_6_plus' =>  '414x736',
-      'iphone_7'      =>  '375x667',
-      'iphone_7_plus' =>  '414x736',
-      'iphone_8'      =>  '375x667',
-      'iphone_8_plus' =>  '414x736',
-      'iphone_x'      =>  '375x812',
-      'ipad'          =>  '768x1024',
-      'desktop'       =>  '1400x1400'
+      'iphone_6'      => '375x667',
+      'iphone_6_plus' => '414x736',
+      'iphone_7'      => '375x667',
+      'iphone_7_plus' => '414x736',
+      'iphone_8'      => '375x667',
+      'iphone_8_plus' => '414x736',
+      'iphone_x'      => '375x812',
+      'ipad'          => '768x1024',
+      'desktop'       => '1400x1400'
     }
 
     screen_size = ENV.fetch('SELENIUM_SCREEN_SIZE', 'desktop')
