@@ -4,7 +4,8 @@
 Vagrant.configure('2') do |config|
   config.vm.box = 'bento/ubuntu-20.04'
   config.vm.host_name = 'echo'
-  config.vm.network 'private_network', ip: '192.168.33.10'
+  @ip_address = '192.168.33.10'
+  config.vm.network 'private_network', ip: @ip_address
 
   # When connecting through SSH forward port 4444 on the vagrant box to 4444 on the host
   config.ssh.extra_args = ['-R', '4444:localhost:4444']
@@ -16,6 +17,6 @@ Vagrant.configure('2') do |config|
     cd /vagrant && bundle install
 
     # Setup the CAPYBARA_SERVER_HOST so you don't have to think about the IP address when using the selenium_remote driver
-    echo 'CAPYBARA_SERVER_HOST=192.168.33.10' > /home/vagrant/.pam_environment
+    echo 'CAPYBARA_SERVER_HOST=#{@ip_address}' > /home/vagrant/.pam_environment
   SHELL
 end
