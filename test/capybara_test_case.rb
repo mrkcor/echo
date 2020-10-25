@@ -31,6 +31,8 @@ class CapybaraTestCase < MiniTest::Test
   include Capybara::DSL
   include Capybara::Minitest::Assertions
 
+  # setup is run before each test, it ensures that the Capybara.app_host is
+  # set properly, it also applies the set screen size
   def setup
     return if page.server.nil?
 
