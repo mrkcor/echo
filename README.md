@@ -1,6 +1,6 @@
 Echo
 ==============
-This is an example project to demonstrate testing a Rack application (in this case using Sinatra) using Capybara and Selenium with various options. A blog post that uses this project is being written... :)
+This is an example project to demonstrate testing a Rack application (in this case using Sinatra) using Capybara and Selenium with various options, I wrote an accompanying blog article here: https://without-brains.net/2020/10/25/capybara-with-selenium-and-vagrant-without-rails/
 
 This project runs on ruby 2.7.x (but will likely function with 2.6.x too).
 
