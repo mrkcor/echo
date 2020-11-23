@@ -1,13 +1,13 @@
-require "bundler/setup"
-require "sinatra/base"
-require "cgi"
+require 'bundler/setup'
+require 'sinatra/base'
+require 'cgi'
 
 class Echo < Sinatra::Base
-  get "/" do
+  get '/' do
     erb :form, locals: {message: nil}
   end
 
-  post "/" do
+  post '/' do
     erb :form, locals: {message: params[:message]}
   end
 end
